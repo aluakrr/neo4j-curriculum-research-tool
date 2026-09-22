@@ -1,0 +1,25 @@
+name: Feature request
+description: Propose a new research or graph-validation capability
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Research or user problem
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Acceptance evidence
+      description: Describe the test or metric that would prove completion.
+    validations:
+      required: true
+
