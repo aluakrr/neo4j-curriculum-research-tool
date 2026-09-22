@@ -1,0 +1,15 @@
+{
+  "courses": [
+    {"code": "CS101", "name": "Programming Fundamentals", "postrequisites": ["CS201", "SE201"]},
+    {"code": "CS201", "name": "Algorithms and Data Structures", "prerequisites": ["CS101"], "postrequisites": ["AI301", "REL301"]},
+    {"code": "SE201", "name": "Software Design Patterns", "prerequisites": ["CS101"]},
+    {"code": "FIN101", "name": "Introduction to Finance"},
+    {"code": "AI301", "name": "Artificial Intelligence and Machine Learning", "prerequisites": ["CS101", "CS201"]},
+    {"code": "REL301", "name": "Fault Tolerance and Reliability", "prerequisites": ["CS201"]}
+  ],
+  "elective_groups": [
+    {"group_id": "EG1", "name": "Business or Software Design", "options": ["FIN101", "SE201"]},
+    {"group_id": "EG2", "name": "Intelligent or Reliable Systems", "options": ["AI301", "REL301"]}
+  ]
+}
+
