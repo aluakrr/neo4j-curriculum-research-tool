@@ -4,7 +4,7 @@ A small reproducible Python module for validating curriculum relationship data b
 
 ## Research purpose
 
-Human-oriented curriculum documents often encode elective alternatives as slash-separated text. The module converts those alternatives into explicit elective groups, evaluates prerequisite satisfaction, returns available options per group, and generates deterministic Cypher statements for a Neo4j property graph.
+Human-oriented curriculum documents often encode elective alternatives as slash-separated text. The package includes a helper for splitting these entries. The CLI reads JSON with explicitly defined courses and elective groups, validates their references, evaluates prerequisite satisfaction, returns available options per group, and generates deterministic Cypher statements for a Neo4j property graph.
 
 ## Features
 
@@ -27,6 +27,8 @@ data/sample_curriculum.json  Demonstration fixture
 ```
 
 ## Installation
+
+Requires Python 3.11 or newer. Run the commands from the repository root.
 
 ```bash
 python -m venv .venv
@@ -67,13 +69,15 @@ curriculum-graph data/sample_curriculum.json cypher --output build/import.cypher
 pytest
 ```
 
-The CI workflow runs compilation, Ruff static checks, and the full test suite on Python 3.11 and 3.12 for every push and pull request.
+The [CI workflow](.github/workflows/ci.yml) runs compilation, Ruff static checks, and the full test suite on Python 3.11 and 3.12 for pushes to `main` and pull requests targeting `main`. It can also be started manually. See [GitHub Actions](https://github.com/aluakrr/neo4j-curriculum-research-tool/actions) for run results.
 
 ## Repository link
 
-After publication, replace the placeholder below with the real public repository URL:
+Maintained by Alua Koishybay ([aluakrr](https://github.com/aluakrr)).
 
-`https://github.com/<username>/neo4j-curriculum-research-tool`
+[Public repository](https://github.com/aluakrr/neo4j-curriculum-research-tool)
+
+Report bugs or suggest improvements through [GitHub Issues](https://github.com/aluakrr/neo4j-curriculum-research-tool/issues).
 
 ## License
 
