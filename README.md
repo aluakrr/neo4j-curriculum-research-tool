@@ -79,6 +79,12 @@ Maintained by Alua Koishybay ([aluakrr](https://github.com/aluakrr)).
 
 Report bugs or suggest improvements through [GitHub Issues](https://github.com/aluakrr/neo4j-curriculum-research-tool/issues).
 
+## Assignment 5: Docker and Jenkins
+
+The `assignment5-devops` branch adds a Dockerfile, a Jenkins pipeline with JUnit reports,
+container smoke checks, and automatic batch execution in a local test environment.
+See [the ordered setup guide](docs/assignment5.md) and [Jenkinsfile](Jenkinsfile).
+
 ## License
 
 MIT License. See [LICENSE](LICENSE).
