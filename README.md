@@ -14,7 +14,7 @@ Human-oriented curriculum documents often encode elective alternatives as slash-
 - course and elective-group availability checks;
 - deterministic Cypher generation;
 - command-line interface;
-- automated tests and GitHub Actions CI.
+- automated tests, GitHub Actions CI, Docker, and a Jenkins pipeline.
 
 ## Project structure
 
@@ -22,7 +22,11 @@ Human-oriented curriculum documents often encode elective alternatives as slash-
 src/curriculum_graph_tool/   Python package
 tests/                       Unit and integration tests
 data/sample_curriculum.json  Demonstration fixture
-.github/workflows/ci.yml     Continuous integration workflow
+Dockerfile                   Test and runtime container stages
+Jenkinsfile                  Jenkins CI pipeline
+compose.jenkins.yml          Local Jenkins and Docker-in-Docker stack
+jenkins/Dockerfile           Jenkins image with Docker CLI and plugins
+.github/workflows/ci.yml     Hosted CI and container verification
 .github/ISSUE_TEMPLATE/      Issue templates
 ```
 
@@ -69,7 +73,39 @@ curriculum-graph data/sample_curriculum.json cypher --output build/import.cypher
 pytest
 ```
 
-The [CI workflow](.github/workflows/ci.yml) runs compilation, Ruff static checks, and the full test suite on Python 3.11 and 3.12 for pushes to `main` and pull requests targeting `main`. It can also be started manually. See [GitHub Actions](https://github.com/aluakrr/neo4j-curriculum-research-tool/actions) for run results.
+The [CI workflow](.github/workflows/ci.yml) runs compilation, Ruff static checks, and all fourteen tests on Python 3.11 and 3.12. A dependent container job validates the Jenkins Compose file, builds the Docker test and runtime stages, repeats the quality checks inside Docker, and runs the packaged CLI as a smoke test. See [GitHub Actions](https://github.com/aluakrr/neo4j-curriculum-research-tool/actions) for run results.
+
+## Docker
+
+Build and run the minimal runtime image:
+
+```bash
+docker build --target runtime -t curriculum-graph:latest .
+docker run --rm curriculum-graph:latest
+```
+
+Run the full verification suite inside the test image:
+
+```bash
+docker build --target test -t curriculum-graph:test .
+docker run --rm --entrypoint sh curriculum-graph:test -c "python -m compileall -q src && ruff check src tests && pytest"
+```
+
+## Jenkins
+
+Start the local Jenkins controller and its isolated Docker daemon:
+
+```bash
+docker compose -f compose.jenkins.yml up -d --build
+```
+
+Open `http://localhost:8080`, complete the initial setup, create a Pipeline job from SCM, set the repository URL to this repository, and keep `Jenkinsfile` as the script path. Every run checks out the revision, builds the test image, compiles and lints the source, runs the tests, builds the runtime image, and performs a container smoke test.
+
+Stop the local stack without deleting its persistent volumes:
+
+```bash
+docker compose -f compose.jenkins.yml down
+```
 
 ## Repository link
 
@@ -82,4 +118,3 @@ Report bugs or suggest improvements through [GitHub Issues](https://github.com/a
 ## License
 
 MIT License. See [LICENSE](LICENSE).
-

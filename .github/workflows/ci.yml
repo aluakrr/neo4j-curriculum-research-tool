@@ -34,3 +34,19 @@ jobs:
       - name: Run automated tests
         run: pytest
 
+  container:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Validate Jenkins Compose configuration
+        run: docker compose -f compose.jenkins.yml config --quiet
+      - name: Build test image
+        run: docker build --target test -t curriculum-graph:test .
+      - name: Compile lint and test inside Docker
+        run: docker run --rm --entrypoint sh curriculum-graph:test -c "python -m compileall -q src && ruff check src tests && pytest"
+      - name: Build runtime image
+        run: docker build --target runtime -t curriculum-graph:${{ github.sha }} .
+      - name: Run container smoke test
+        run: docker run --rm curriculum-graph:${{ github.sha }}
