@@ -61,8 +61,9 @@ The password file is ignored by Git and must not be included in a submission arc
 
 Test failures stop image delivery. The pipeline stores logs and artifacts for the last
 20 builds. Source/image identity is recorded; this is not a claim of bit-identical image
-rebuilds. Jenkins plugin versions are resolved during controller build; the actual
-installed list is retained with submission evidence.
+rebuilds. `jenkins/plugins.txt` lists the requested plugin families; all actual plugin
+versions, including dependencies, are frozen in `jenkins/plugins.lock.txt` from the
+working controller. The Dockerfile installs this lock with `--latest=false`.
 
 Docker Hub publishing requires a Jenkins username/password credential named `dockerhub`
 (username plus access token), the `DOCKERHUB_NAMESPACE` parameter, and `PUSH_DOCKER_HUB=true`.
